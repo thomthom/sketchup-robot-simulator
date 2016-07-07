@@ -1,0 +1,42 @@
+require 'tt_bot/node'
+
+module TT::Plugins::Bot
+
+  class Simulation
+
+    def initialize
+      @nodes = []
+      @timer = nil
+    end
+
+    def add_node(node)
+      @nodes << node
+      nil
+    end
+
+    def start
+      @timer = UI.start_timer(0.1, true) {
+        tick
+      }
+      nil
+    end
+
+    def stop
+      UI.stop_timer(@timer) if @timer
+      @timer = nil
+      nil
+    end
+
+    def tick
+      @nodes.each { |node| node.tick }
+      Sketchup.active_model.active_view.invalidate
+      nil
+    rescue
+      warn 'stopping simulation'
+      stop
+      raise
+    end
+
+  end # class simulation
+
+end # module
