@@ -3,10 +3,20 @@ require 'tt_bot/simulation_tool'
 module TT::Plugins::Bot
 
   unless file_loaded?(__FILE__)
-    menu = UI.menu('Plugins')
-    menu.add_item('Simulate Triangulation') {
+    cmd = UI::Command.new('Start Simulation') {
       self.start_simulation
     }
+    cmd.tooltip = 'Start Bot Simulation'
+    cmd.small_icon = File.join(PATH, 'icons', 'iconmonstr-video-15.svg')
+    cmd.large_icon = File.join(PATH, 'icons', 'iconmonstr-video-15.svg')
+    cmd_start_simulation = cmd
+
+    toolbar = UI.toolbar('Bot Simulation')
+    toolbar.add_item(cmd_start_simulation)
+
+    menu = UI.menu('Plugins')
+    menu.add_item(cmd_start_simulation)
+
     file_loaded(__FILE__)
   end
 
