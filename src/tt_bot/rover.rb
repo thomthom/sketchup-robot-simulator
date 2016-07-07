@@ -1,4 +1,5 @@
 require 'tt_bot/node'
+require 'tt_bot/sensor'
 
 module TT::Plugins::Bot
 
