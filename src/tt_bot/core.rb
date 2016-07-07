@@ -33,11 +33,11 @@ module TT::Plugins::Bot
   def self.init_simulation
     model = Sketchup.active_model
     path = model.entities.grep(Sketchup::Edge).first
-    arrow = model.entities.grep(Sketchup::ConstructionPoint).first
+    cpoints = model.entities.grep(Sketchup::ConstructionPoint)
 
     @tool.simulation.stop if @tool && @tool.simulation
 
-    @tool = SimulationTool.new(path, arrow)
+    @tool = SimulationTool.new(path, cpoints)
     model.select_tool(@tool)
     nil
   end

@@ -1,15 +1,58 @@
+require 'tt_bot/baseobject'
 require 'tt_bot/node'
 
 module TT::Plugins::Bot
 
+
+  module SensorTarget
+
+    def object_info
+      "@ #{global_position.inspect}"
+    end
+
+  end # module
+
+
+  class Ping < BaseObject
+
+    attr_reader :source
+    attr_reader :target
+    attr_reader :distance
+
+    def initialize(source, target)
+      @source = source
+      @target = target
+      @distance = source.distance(target)
+    end
+
+    def object_info
+      "range: #{source.range}, distance: #{@distance}"
+    end
+
+  end # class
+
+
   class Sensor < Node
 
-    def initialize(range, parent, transformation)
-      super(parent, transformation)
+    attr_reader :range
+
+    def initialize(range)
+      super()
       @range = range
     end
 
+    def object_info
+      "range #{@range} @ #{global_position.inspect}"
+    end
+
     def ping
+      response = []
+      simulation.nodes.each { |node|
+        next unless node.is_a?(SensorTarget)
+        ping = Ping.new(self, node)
+        response << ping if ping.distance <= @range
+      }
+      response
     end
 
     def draw(view)
@@ -24,7 +67,7 @@ module TT::Plugins::Bot
       view.draw(GL_LINE_LOOP, front)
 
       pt1 = transform_points(ORIGIN)
-      view.draw_points([pt1], 10, GL_X, 'red')
+      view.draw_points([pt1], 10, GL_X, 'purple')
 
       angle = 45.degrees
       pie = pie2d(ORIGIN, @range, -angle, angle, Y_AXIS)

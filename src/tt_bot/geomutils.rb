@@ -42,6 +42,12 @@ module TT::Plugins::Bot
       points
     end
 
+    def orient2d(position, direction)
+      yaxis = direction
+      xaxis = yaxis * Z_AXIS
+      Geom::Transformation.new(position, xaxis, yaxis)
+    end
+
   end # module
 
 end # module
