@@ -1,4 +1,5 @@
 require 'tt_bot/glutils'
+require 'tt_bot/simulation'
 
 module TT::Plugins::Bot
 
