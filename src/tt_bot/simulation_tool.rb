@@ -1,4 +1,5 @@
 require 'tt_bot/glutils'
+require 'tt_bot/rover'
 require 'tt_bot/simulation'
 
 module TT::Plugins::Bot
@@ -21,6 +22,10 @@ module TT::Plugins::Bot
       @rover = Rover.new(tr)
 
       @simulation.add_node(@rover)
+    end
+
+    def activate
+      Sketchup.active_model.active_view.invalidate
     end
 
     def deactivate(view)
